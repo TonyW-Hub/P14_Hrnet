@@ -1,0 +1,14 @@
+@use "../../../shared/styles/index.scss" as *;
+
+.NavBar {
+  height: 80px;
+  background: $gradient;
+  @include flexRow();
+
+  a {
+    color: $white;
+    text-decoration: none;
+    font-size: 3rem;
+    font-weight: bold;
+  }
+}

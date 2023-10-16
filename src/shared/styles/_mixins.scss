@@ -1,0 +1,77 @@
+@mixin resolution($device, $query: min-width) {
+  @if $device == mobile {
+    @media screen and ($query: 450px) {
+      @content;
+    }
+  } @else if $device == x-mobile {
+    @media screen and ($query: 340px) {
+      @content;
+    }
+  } @else if $device == x-tablet {
+    @media screen and ($query: 650px) {
+      @content;
+    }
+  } @else if $device == tablet {
+    @media screen and ($query: 770px) {
+      @content;
+    }
+  } @else if $device == xx-desktop {
+    @media screen and ($query: 1020px) {
+      @content;
+    }
+  } @else if $device == x-desktop {
+    @media screen and ($query: 1024px) {
+      @content;
+    }
+  } @else if $device == desktop {
+    @media screen and ($query: 1500px) {
+      @content;
+    }
+  }
+}
+
+@mixin flexRow($justify: center, $align: center) {
+  display: flex;
+  flex-direction: row;
+  justify-content: $justify;
+  align-items: $align;
+}
+
+@mixin flexColumn($align: center, $justify: center) {
+  display: flex;
+  flex-direction: column;
+  justify-content: $justify;
+  align-items: $align;
+}
+
+@mixin fluidGrid($min: 150px) {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, $min), 1fr));
+}
+
+@mixin lineClampText($line-clamp: 2) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box !important;
+  -webkit-line-clamp: $line-clamp;
+  -webkit-box-orient: vertical;
+}
+
+@mixin sizingContent {
+  transition: all 0.2s ease-in-out;
+  margin-inline: auto;
+  padding: $padding-content-mobile;
+  width: 100%;
+
+  @include resolution(tablet) {
+    padding: $padding-content-tablet;
+  }
+
+  @include resolution(x-desktop) {
+    padding: $padding-content;
+  }
+
+  @include resolution(desktop) {
+    padding: 3.5rem 10rem;
+  }
+}
