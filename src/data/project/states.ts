@@ -1,12 +1,7 @@
-import type { MenuProps } from "antd"
-
-export const states: MenuProps["items"] = [
+export const states = [
   {
-    key: "1",
-    label: {
-      name: "Alabama",
-      abbreviation: "AL",
-    },
+    name: "Alabama",
+    abbreviation: "AL",
   },
   {
     name: "Alaska",
