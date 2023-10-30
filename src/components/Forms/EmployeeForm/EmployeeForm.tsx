@@ -56,7 +56,7 @@ export const EmployeeForm = (props: PropsWithChildren<EmployeeFormProps>) => {
         <InputNumber min={1} max={10} defaultValue={1} />
       </Form.Item>
       <Form.Item>
-        <Select options={departments} placeholder="Select state"></Select>
+        <Select options={departments} placeholder="Select department"></Select>
       </Form.Item>
       <Form.Item>
         <Button htmlType="submit">Save</Button>

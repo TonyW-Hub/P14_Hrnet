@@ -3,12 +3,27 @@
 .NavBar {
   height: 80px;
   background: $gradient;
-  @include flexRow();
+  @include flexRow(space-between);
+  padding: 0 3em;
 
   a {
-    color: $white;
     text-decoration: none;
+    color: $white;
+  }
+
+  .main {
     font-size: 3rem;
     font-weight: bold;
+  }
+
+  .employees,
+  .new {
+    @include flexRow();
+    gap: $small;
+    cursor: pointer;
+
+    svg {
+      stroke: $white;
+    }
   }
 }
