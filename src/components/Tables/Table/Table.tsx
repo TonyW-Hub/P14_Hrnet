@@ -1,22 +1,28 @@
 import React, { PropsWithChildren } from "react"
 import Styles from "./Table.module.scss"
-
-export type ColumnType<T> = {
-  key: string
-  title: string
-  dataIndex?: string | undefined
-  render?: (text: string, record: T) => React.ReactNode
-}
+import { ColumnType } from "../../../types/index"
 
 type TableProps = {
   dataSource: readonly any[]
   columns: ColumnType<any>[]
+  search: string
 }
 
-export const Table = ({
+const Table = ({
   dataSource,
   columns,
+  search,
 }: PropsWithChildren<TableProps>) => {
+  const localDataSource = dataSource.filter((data) => {
+    if (search) {
+      // boucler et chercher dans toutes les colonnes qui correspondent à une ligne
+      if (data.includes(search)) {
+        return true
+      }
+      return false
+    }
+    return true
+  })
   return (
     <table className={Styles.Table}>
       <thead>
@@ -27,7 +33,7 @@ export const Table = ({
         </tr>
       </thead>
       <tbody>
-        {dataSource.map((record, index) => (
+        {localDataSource.map((record, index) => (
           <tr key={index}>
             {columns.map((column) => (
               <td key={column.key}>
@@ -42,3 +48,5 @@ export const Table = ({
     </table>
   )
 }
+
+export default Table

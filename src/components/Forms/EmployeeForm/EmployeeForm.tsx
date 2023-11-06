@@ -51,7 +51,7 @@ export const EmployeeForm = (props: PropsWithChildren<EmployeeFormProps>) => {
       return
     }
 
-    addNewEmployee(fields)
+    dispatch(addNewEmployee(fields))
   }
 
   useEffect(() => {
