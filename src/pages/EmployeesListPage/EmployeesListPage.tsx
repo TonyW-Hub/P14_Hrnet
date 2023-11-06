@@ -1,7 +1,8 @@
 import React, { PropsWithChildren } from "react"
 import Styles from "./EmployeesListPage.module.scss"
-import { ColumnType, Table } from "../../components/Tables/Table/Table"
+import Table from "../../components/Tables/Table/Table"
 import { Employee } from "../../types"
+import { ColumnType } from "../../types"
 
 type EmployeesListPageProps = {}
 

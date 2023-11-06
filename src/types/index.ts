@@ -12,3 +12,10 @@ export interface Employee {
   state: string
   zipCode: string
 }
+
+export type ColumnType<T> = {
+  key: string
+  title: string
+  dataIndex?: string | undefined
+  render?: (text: string, record: T) => React.ReactNode
+}
