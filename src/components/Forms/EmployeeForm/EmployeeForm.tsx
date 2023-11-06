@@ -14,7 +14,7 @@ import {
 } from "../../../features/selects/selectSlice"
 import { addNewEmployee } from "../../../features/forms/formSlice"
 import { Employee } from "../../../types"
-import { LOCAL_STORAGE_KEYS } from "../../../utils/localStorageKeys"
+import { setNewEmployees } from "../../../features/employees/employeesSlice"
 
 type EmployeeFormProps = {}
 
@@ -51,7 +51,9 @@ export const EmployeeForm = (props: PropsWithChildren<EmployeeFormProps>) => {
       return
     }
 
-    addNewEmployee(fields)
+    dispatch(setNewEmployees(fields))
+
+    dispatch(addNewEmployee(fields))
   }
 
   useEffect(() => {

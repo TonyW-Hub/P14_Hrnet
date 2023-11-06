@@ -1,11 +1,12 @@
 import React, { PropsWithChildren } from "react"
 import Styles from "./NavBar.module.scss"
-import { Link, useLocation } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 
 type NavBarProps = {}
 
 export const NavBar = (props: PropsWithChildren<NavBarProps>) => {
   const { pathname } = useLocation()
+  const navigate = useNavigate()
 
   return (
     <nav className={Styles.NavBar}>
@@ -13,7 +14,12 @@ export const NavBar = (props: PropsWithChildren<NavBarProps>) => {
         Hrnet
       </Link>
       {pathname === "/" && (
-        <span className={Styles.employees}>
+        <span
+          className={Styles.employees}
+          onClick={() => {
+            navigate("/employee-list")
+          }}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -34,7 +40,12 @@ export const NavBar = (props: PropsWithChildren<NavBarProps>) => {
         </span>
       )}
       {pathname === "/employee-list" && (
-        <span className={Styles.new}>
+        <span
+          className={Styles.new}
+          onClick={() => {
+            navigate("/")
+          }}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
