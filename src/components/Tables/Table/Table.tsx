@@ -1,32 +1,44 @@
 import React, { PropsWithChildren } from "react"
 import Styles from "./Table.module.scss"
 
-type TableProps = {
-  rows: any[]
-  columns: any[]
+export type ColumnType<T> = {
+  key: string
+  title: string
+  dataIndex?: string | undefined
+  render?: (text: string, record: T) => React.ReactNode
 }
 
-export const Table = ({ rows, columns }: PropsWithChildren<TableProps>) => {
+type TableProps = {
+  dataSource: readonly any[]
+  columns: ColumnType<any>[]
+}
+
+export const Table = ({
+  dataSource,
+  columns,
+}: PropsWithChildren<TableProps>) => {
   return (
     <table className={Styles.Table}>
-      {columns.length > 0 && (
-        <thead>
-          <tr>
-            {columns.map((col, index) => (
-              <th key={"col" + index}>{col?.title}</th>
+      <thead>
+        <tr>
+          {columns.map((column) => (
+            <th key={column.key}>{column.title}</th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {dataSource.map((record, index) => (
+          <tr key={index}>
+            {columns.map((column) => (
+              <td key={column.key}>
+                {column.render && record
+                  ? column.render(record[column?.dataIndex || 0], record)
+                  : record[column.dataIndex || 0]}
+              </td>
             ))}
           </tr>
-        </thead>
-      )}
-      {rows.length > 0 && (
-        <tbody>
-          <tr>
-            {rows.map((row, index) => (
-              <td key={index}>{row}</td>
-            ))}
-          </tr>
-        </tbody>
-      )}
+        ))}
+      </tbody>
     </table>
   )
 }
