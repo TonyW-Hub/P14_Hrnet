@@ -41,7 +41,7 @@ export const EmployeeForm = (props: PropsWithChildren<EmployeeFormProps>) => {
     street: "",
     city: "",
     state: "",
-    zipCode: "",
+    zipCode: "1",
   } as Employee)
 
   const handleSubmit = () => {

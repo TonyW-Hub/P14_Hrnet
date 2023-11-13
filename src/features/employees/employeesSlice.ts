@@ -30,7 +30,16 @@ export const { setNewEmployees } = employeesSlice.actions
 export const addNewEmployee =
   (employee: Employee): AppThunk =>
   (dispatch) => {
-    localStorage.setItem(LOCAL_STORAGE_KEYS.employees, JSON.stringify(employee))
+    const currentArray = JSON.parse(
+      localStorage.getItem(LOCAL_STORAGE_KEYS.employees) || "[]",
+    )
+
+    if (currentArray) {
+      localStorage.setItem(
+        LOCAL_STORAGE_KEYS.employees,
+        JSON.stringify([...currentArray, employee]),
+      )
+    }
   }
 
 export const selectEmployees = (state: RootState) => state.employees.employees
