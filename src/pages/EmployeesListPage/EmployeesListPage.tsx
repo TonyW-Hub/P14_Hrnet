@@ -2,6 +2,8 @@ import React, { PropsWithChildren } from "react"
 import Styles from "./EmployeesListPage.module.scss"
 import { ColumnType, Table } from "../../components/Tables/Table/Table"
 import { Employee } from "../../types"
+import { useAppSelector } from "../../app/hooks"
+import { selectEmployees } from "../../features/employees/employeesSlice"
 
 type EmployeesListPageProps = {}
 
@@ -53,27 +55,14 @@ const columns: ColumnType<Employee>[] = [
   },
 ]
 
-const data: Employee[] = [
-  {
-    key: "1",
-    firstName: "John",
-    lastName: "Doe",
-    startDate: "10/17/2023",
-    department: "Marketing",
-    dateOfBirth: "10/20/2010",
-    street: "main street",
-    city: "main city",
-    state: "AL",
-    zipCode: "132",
-  },
-]
-
 export const EmployeesListPage = (
   props: PropsWithChildren<EmployeesListPageProps>,
 ) => {
+  const employees = useAppSelector(selectEmployees)
+
   return (
     <div className={Styles.EmployeesListPage}>
-      <Table dataSource={data} columns={columns} />
+      <Table dataSource={employees} columns={columns} />
     </div>
   )
 }

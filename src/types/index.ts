@@ -1,4 +1,4 @@
-export type Icons = "user" | "house" | "city" | "cake"
+export type Icons = "user" | "house" | "city" | "cake" | "map"
 
 export interface Employee {
   key: string

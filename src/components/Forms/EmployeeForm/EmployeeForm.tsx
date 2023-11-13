@@ -1,6 +1,6 @@
 import React, { PropsWithChildren, useEffect, useReducer } from "react"
 import Styles from "./EmployeeForm.module.scss"
-import { Button, DatePicker, Form, Input, InputNumber, Select } from "antd"
+import { Button, DatePicker, Form, Input, Select } from "antd"
 import { useIcons } from "../../../hooks/useIcons"
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
 import locale from "antd/es/date-picker/locale/fr_FR"
@@ -26,6 +26,7 @@ export const EmployeeForm = (props: PropsWithChildren<EmployeeFormProps>) => {
   const { icon: userIcon } = useIcons({ variantIcon: "user" })
   const { icon: cityIcon } = useIcons({ variantIcon: "city" })
   const { icon: houseIcon } = useIcons({ variantIcon: "house" })
+  const { icon: mapIcon } = useIcons({ variantIcon: "map" })
 
   const reducer = (prev: Employee, next: Partial<Employee>) => ({
     ...prev,
@@ -63,25 +64,54 @@ export const EmployeeForm = (props: PropsWithChildren<EmployeeFormProps>) => {
 
   return (
     <Form layout="vertical" className={Styles.EmployeeForm}>
-      <Form.Item label="First Name">
+      <Form.Item
+        label="First Name"
+        name="fistName"
+        tooltip="Enter the employee first name"
+        rules={[
+          {
+            required: true,
+            message: "Please input correct first name",
+            whitespace: true,
+            pattern: RegExp("^[A-Za-z-' ]+$"),
+          },
+        ]}
+      >
         <Input
           placeholder="First Name"
-          prefix={userIcon}
+          prefix={userIcon ? userIcon : <span />}
           onChange={(e) => {
             updateField({ firstName: e.currentTarget.value })
           }}
         />
       </Form.Item>
-      <Form.Item label="Last Name">
+      <Form.Item
+        label="Last Name"
+        name="lastName"
+        tooltip="Enter the employee last name"
+        rules={[
+          {
+            required: true,
+            message: "Please input correct last name",
+            whitespace: true,
+            pattern: RegExp("^[A-Za-z-' ]+$"),
+          },
+        ]}
+      >
         <Input
           placeholder="Last Name"
-          prefix={userIcon}
+          prefix={userIcon ? userIcon : <span />}
           onChange={(e) => {
             updateField({ lastName: e.currentTarget.value })
           }}
         />
       </Form.Item>
-      <Form.Item label="Date of Birth">
+      <Form.Item
+        label="Date of Birth"
+        name="dateOfBirth"
+        tooltip="Enter the employee date of birth"
+        rules={[{ required: true, message: "Please input the date of birth" }]}
+      >
         <DatePicker
           size="large"
           locale={locale}
@@ -90,7 +120,12 @@ export const EmployeeForm = (props: PropsWithChildren<EmployeeFormProps>) => {
           }}
         />
       </Form.Item>
-      <Form.Item label="Start Date">
+      <Form.Item
+        label="Start Date"
+        name="startDate"
+        tooltip="Enter the start date the employee joined the company"
+        rules={[{ required: true, message: "Please input the start date" }]}
+      >
         <DatePicker
           size="large"
           locale={locale}
@@ -99,25 +134,54 @@ export const EmployeeForm = (props: PropsWithChildren<EmployeeFormProps>) => {
           }}
         />
       </Form.Item>
-      <Form.Item label="Street">
+      <Form.Item
+        label="Street"
+        name="street"
+        tooltip="Enter employee street"
+        rules={[
+          {
+            required: true,
+            message: "Please input correct street",
+            whitespace: true,
+            pattern: RegExp("^[A-Za-z0-9,' -]+$"),
+          },
+        ]}
+      >
         <Input
           placeholder="Street"
-          prefix={houseIcon}
+          prefix={houseIcon ? houseIcon : <span />}
           onChange={(e) => {
             updateField({ street: e.currentTarget.value })
           }}
         />
       </Form.Item>
-      <Form.Item label="City">
+      <Form.Item
+        label="City"
+        name="city"
+        tooltip="Enter employee city"
+        rules={[
+          {
+            required: true,
+            message: "Please input correct city",
+            whitespace: true,
+            pattern: RegExp("^[A-Za-z-' ]+$"),
+          },
+        ]}
+      >
         <Input
           placeholder="City"
-          prefix={cityIcon}
+          prefix={cityIcon ? cityIcon : <span />}
           onChange={(e) => {
             updateField({ city: e.currentTarget.value })
           }}
         />
       </Form.Item>
-      <Form.Item label="State">
+      <Form.Item
+        label="State"
+        name="state"
+        tooltip="Select employee state"
+        rules={[{ required: true, message: "Please select a state" }]}
+      >
         <Select
           options={states}
           placeholder="Select state"
@@ -126,17 +190,37 @@ export const EmployeeForm = (props: PropsWithChildren<EmployeeFormProps>) => {
           }}
         ></Select>
       </Form.Item>
-      <Form.Item label="Zip code">
-        <InputNumber
-          min={1}
-          max={10}
+      <Form.Item
+        label="Zip code"
+        name="zipCode"
+        tooltip="Enter the employee zip code"
+        rules={[
+          {
+            required: true,
+            message: "Please input a correct zip code",
+            pattern: RegExp("^[0-9s ]+$"),
+          },
+        ]}
+      >
+        <Input
           defaultValue={1}
+          prefix={mapIcon ? mapIcon : <span />}
           onChange={(e) => {
-            updateField({ zipCode: e?.toString() })
+            updateField({ zipCode: e.currentTarget.value })
           }}
         />
       </Form.Item>
-      <Form.Item label="Department">
+      <Form.Item
+        label="Department"
+        name="department"
+        tooltip="Select a departement"
+        rules={[
+          {
+            required: true,
+            message: "Select a departement",
+          },
+        ]}
+      >
         <Select
           options={departments}
           placeholder="Select department"
