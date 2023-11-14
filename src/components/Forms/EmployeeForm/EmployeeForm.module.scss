@@ -1,3 +1,8 @@
-.EmployeeForm {
-    
+@use "../../../shared/styles/index.scss" as *;
+
+// .EmployeeForm {
+// }
+.toggle {
+  @include flexRow(flex-start);
+  gap: $small;
 }

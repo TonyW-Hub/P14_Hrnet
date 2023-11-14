@@ -1,6 +1,6 @@
-import React, { PropsWithChildren, useEffect, useReducer } from "react"
+import { useEffect, useReducer, useState } from "react"
 import Styles from "./EmployeeForm.module.scss"
-import { Button, DatePicker, Form, Input, Select } from "antd"
+import { Button, DatePicker, Form, Input, Modal, Select, Switch } from "antd"
 import { useIcons } from "../../../hooks/useIcons"
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
 import locale from "antd/es/date-picker/locale/fr_FR"
@@ -12,21 +12,28 @@ import {
   setSelectDepartment,
   setSelectStates,
 } from "../../../features/selects/selectSlice"
-import { addNewEmployee } from "../../../features/forms/formSlice"
 import { Employee } from "../../../types"
-import { setNewEmployees } from "../../../features/employees/employeesSlice"
+import {
+  addNewEmployee,
+  setNewEmployees,
+} from "../../../features/employees/employeesSlice"
+import { useNavigate } from "react-router-dom"
 
-type EmployeeFormProps = {}
-
-export const EmployeeForm = (props: PropsWithChildren<EmployeeFormProps>) => {
+export const EmployeeForm = () => {
   const states = useAppSelector(selectStates)
   const departments = useAppSelector(selectDepartements)
   const dispatch = useAppDispatch()
+
+  const navigate = useNavigate()
 
   const { icon: userIcon } = useIcons({ variantIcon: "user" })
   const { icon: cityIcon } = useIcons({ variantIcon: "city" })
   const { icon: houseIcon } = useIcons({ variantIcon: "house" })
   const { icon: mapIcon } = useIcons({ variantIcon: "map" })
+
+  const [loading, setLoading] = useState(false)
+  const [open, setOpen] = useState(false)
+  const [redirectToggle, setRedirectToggle] = useState(true)
 
   const reducer = (prev: Employee, next: Partial<Employee>) => ({
     ...prev,
@@ -45,16 +52,42 @@ export const EmployeeForm = (props: PropsWithChildren<EmployeeFormProps>) => {
     zipCode: "1",
   } as Employee)
 
+  const showModal = () => {
+    setOpen(true)
+  }
+
+  const handleCancel = () => {
+    setOpen(false)
+  }
+
+  const onChangeToggle = (checked: boolean) => {
+    setRedirectToggle(checked)
+  }
+
   const handleSubmit = () => {
+    setLoading(true)
+
     const idx = Object.values(fields).findIndex((el) => el === "")
     if (idx !== -1) {
+      setLoading(false)
+      if (open) handleCancel()
       alert(`field missing`)
       return
     }
 
-    dispatch(setNewEmployees(fields))
+    setTimeout(() => {
+      dispatch(setNewEmployees(fields))
+      dispatch(addNewEmployee(fields))
 
-    dispatch(addNewEmployee(fields))
+      if (redirectToggle) {
+        setLoading(false)
+        handleCancel()
+        navigate("/employee-list")
+      } else {
+        setLoading(false)
+        handleCancel()
+      }
+    }, 1000)
   }
 
   useEffect(() => {
@@ -203,11 +236,11 @@ export const EmployeeForm = (props: PropsWithChildren<EmployeeFormProps>) => {
         ]}
       >
         <Input
-          defaultValue={1}
           prefix={mapIcon ? mapIcon : <span />}
           onChange={(e) => {
             updateField({ zipCode: e.currentTarget.value })
           }}
+          placeholder="1"
         />
       </Form.Item>
       <Form.Item
@@ -230,14 +263,47 @@ export const EmployeeForm = (props: PropsWithChildren<EmployeeFormProps>) => {
         ></Select>
       </Form.Item>
       <Form.Item>
-        <Button
+        {/* <Button
           htmlType="submit"
           onClick={() => {
             handleSubmit()
           }}
         >
           Save
+        </Button> */}
+        <Button
+          onClick={() => {
+            showModal()
+          }}
+        >
+          Save
         </Button>
+        <Modal
+          open={open}
+          onCancel={handleCancel}
+          onOk={handleSubmit}
+          title="Confirmation"
+          footer={[
+            <Button key="back" onClick={handleCancel}>
+              Cancel
+            </Button>,
+            <Button
+              key="submit"
+              htmlType="submit"
+              type="primary"
+              loading={loading}
+              onClick={handleSubmit}
+            >
+              Submit
+            </Button>,
+          ]}
+        >
+          <p>You confirm the creation of the new employee ?</p>
+          <div className={Styles.toggle}>
+            <span>Would you like to be redirected to the employee list?</span>
+            <Switch defaultChecked onChange={onChangeToggle} />
+          </div>
+        </Modal>
       </Form.Item>
     </Form>
   )
