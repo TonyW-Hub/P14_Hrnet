@@ -1,3 +1,67 @@
 .Table {
-    
+  table-layout: fixed;
+  width: 100%;
+  min-width: 300px;
+  border-collapse: collapse;
+  border-radius: 10px;
+  overflow: hidden;
+  border-spacing: 0;
+
+  th {
+    background-color: #93ad18;
+
+    &:nth-child(even) {
+      background-color: #6e8711;
+    }
+  }
+
+  th,
+  td {
+    text-align: start;
+    padding: 1rem;
+    word-break: break-word;
+    border: 1px solid lighten($color: #93ad18, $amount: 30%);
+  }
+
+  tbody {
+    tr {
+      &:nth-child(even) {
+        background-color: lighten($color: #93ad18, $amount: 30%);
+      }
+    }
+  }
+}
+
+.containerTable {
+  width: 100%;
+  overflow: auto;
+
+  &:active {
+    cursor: grabbing;
+  }
+}
+
+.searchContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: max-content;
+  margin-bottom: 20px;
+  border: 1px solid #93ad18;
+  border-radius: 5px;
+  padding: 5px;
+
+  .iconSearch {
+    svg {
+      stroke: #93ad18;
+    }
+  }
+
+  .inputSearch {
+    // border: 1px solid #93ad18;
+    // border-radius: 5px;
+    border: none;
+    padding: 10px;
+    outline-color: #6e8711;
+  }
 }

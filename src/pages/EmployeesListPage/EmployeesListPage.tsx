@@ -62,7 +62,7 @@ export const EmployeesListPage = (
 
   return (
     <div className={Styles.EmployeesListPage}>
-      <Table dataSource={employees} columns={columns} />
+      <Table dataSource={employees} columns={columns} search />
     </div>
   )
 }

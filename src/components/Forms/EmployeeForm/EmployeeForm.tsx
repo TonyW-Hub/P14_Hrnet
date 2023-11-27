@@ -106,7 +106,7 @@ export const EmployeeForm = () => {
             required: true,
             message: "Please input correct first name",
             whitespace: true,
-            pattern: RegExp("^[A-Za-z-' ]+$"),
+            pattern: RegExp("^[A-Za-z-' À-ÖØ-öø-ÿ]+$"),
           },
         ]}
       >
@@ -127,7 +127,7 @@ export const EmployeeForm = () => {
             required: true,
             message: "Please input correct last name",
             whitespace: true,
-            pattern: RegExp("^[A-Za-z-' ]+$"),
+            pattern: RegExp("^[A-Za-z-' À-ÖØ-öø-ÿ]+$"),
           },
         ]}
       >
@@ -263,14 +263,6 @@ export const EmployeeForm = () => {
         ></Select>
       </Form.Item>
       <Form.Item>
-        {/* <Button
-          htmlType="submit"
-          onClick={() => {
-            handleSubmit()
-          }}
-        >
-          Save
-        </Button> */}
         <Button
           onClick={() => {
             showModal()
