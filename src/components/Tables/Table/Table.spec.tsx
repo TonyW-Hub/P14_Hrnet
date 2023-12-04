@@ -52,6 +52,73 @@ describe("Table Component", () => {
 
     render(<Table dataSource={dataSource} columns={customColumns} />)
 
-    expect(screen.getByText("John")).toBeTruthy()
+    expect(screen.getAllByText("John").length).toBe(2)
+  })
+  // tester le pager
+  it("should render 5 page with 10 items by default", () => {
+    const dataSource2 = []
+    for (let i = 1; i <= 50; i++) {
+      const obj = {
+        key: i.toString(),
+        firstName: `John ${i}`,
+        lastName: `Doe ${i}`,
+      }
+      dataSource2.push(obj)
+    }
+    render(<Table dataSource={dataSource2} columns={columns} />)
+    expect(screen.getAllByRole("pageNumber").length).toBe(5)
+  })
+  it("should render the first page with first item", () => {
+    const dataSource2 = []
+    for (let i = 1; i <= 50; i++) {
+      const obj = {
+        key: i.toString(),
+        firstName: `John ${i}`,
+        lastName: `Doe ${i}`,
+      }
+      dataSource2.push(obj)
+    }
+    render(<Table dataSource={dataSource2} columns={columns} />)
+    expect(screen.getByText("John 1")).toBeTruthy()
+  })
+  it("should render the first page with nine item", () => {
+    const dataSource2 = []
+    for (let i = 1; i <= 50; i++) {
+      const obj = {
+        key: i.toString(),
+        firstName: `John ${i}`,
+        lastName: `Doe ${i}`,
+      }
+      dataSource2.push(obj)
+    }
+    render(<Table dataSource={dataSource2} columns={columns} />)
+    expect(screen.getByText("John 9")).toBeTruthy()
+  })
+  it("should render the first page with only ten item", () => {
+    const dataSource2 = []
+    for (let i = 1; i <= 50; i++) {
+      const obj = {
+        key: i.toString(),
+        firstName: `John ${i}`,
+        lastName: `Doe ${i}`,
+      }
+      dataSource2.push(obj)
+    }
+    render(<Table dataSource={dataSource2} columns={columns} />)
+    expect(screen.queryByText("John 11")).toBeNull()
+  })
+  it("should render the second page with  item from 11 to 20", () => {
+    const dataSource2 = []
+    for (let i = 1; i <= 50; i++) {
+      const obj = {
+        key: i.toString(),
+        firstName: `John ${i}`,
+        lastName: `Doe ${i}`,
+      }
+      dataSource2.push(obj)
+    }
+    render(<Table dataSource={dataSource2} columns={columns} />)
+    // faire un click pour azfficher la seconde page
+    // expect(screen.queryByText("John 11")).toBeThruthy()
   })
 })
