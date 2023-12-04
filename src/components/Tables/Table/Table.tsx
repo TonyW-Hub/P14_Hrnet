@@ -221,7 +221,8 @@ export const Table = ({
               key={page}
               onClick={() => handlePageChange(page + 1)}
               disabled={currentPage === page + 1}
-              className={Styles.btnNumber}
+              className={`${Styles.btnNumber}`}
+              role="pageNumber"
             >
               {page + 1}
             </button>
