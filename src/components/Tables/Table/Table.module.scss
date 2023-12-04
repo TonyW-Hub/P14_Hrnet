@@ -41,27 +41,71 @@
   }
 }
 
-.searchContainer {
+.controlers {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   max-width: max-content;
   margin-bottom: 20px;
-  border: 1px solid #93ad18;
-  border-radius: 5px;
-  padding: 5px;
+  gap: 20px;
 
-  .iconSearch {
-    svg {
-      stroke: #93ad18;
+  .entries {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    .selectEntries {
+      border-color: #93ad18;
+      border-radius: 5px;
+      padding: 5px 15px;
     }
   }
 
-  .inputSearch {
-    // border: 1px solid #93ad18;
-    // border-radius: 5px;
+  .searchContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: max-content;
+    border: 1px solid #93ad18;
+    border-radius: 5px;
+    padding: 5px;
+
+    .iconSearch {
+      svg {
+        stroke: #93ad18;
+      }
+    }
+
+    .inputSearch {
+      border: none;
+      padding: 10px;
+      outline-color: #6e8711;
+    }
+  }
+}
+
+.paginationControls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  .btnControl {
+    background-color: #93ad18;
+    color: #fff;
     border: none;
-    padding: 10px;
-    outline-color: #6e8711;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.15s ease-in-out;
+
+    &:hover {
+      background-color: lighten($color: #93ad18, $amount: 10);
+      color: #000;
+    }
+  }
+
+  .disabled {
+    background-color: grey;
   }
 }

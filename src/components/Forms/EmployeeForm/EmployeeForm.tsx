@@ -67,14 +67,6 @@ export const EmployeeForm = () => {
   const handleSubmit = () => {
     setLoading(true)
 
-    const idx = Object.values(fields).findIndex((el) => el === "")
-    if (idx !== -1) {
-      setLoading(false)
-      if (open) handleCancel()
-      alert(`field missing`)
-      return
-    }
-
     setTimeout(() => {
       dispatch(setNewEmployees(fields))
       dispatch(addNewEmployee(fields))
@@ -96,7 +88,12 @@ export const EmployeeForm = () => {
   }, [dispatch])
 
   return (
-    <Form layout="vertical" className={Styles.EmployeeForm}>
+    <Form
+      layout="vertical"
+      onFinish={showModal}
+      onFinishFailed={() => alert("field missing")}
+      className={Styles.EmployeeForm}
+    >
       <Form.Item
         label="First Name"
         name="fistName"
@@ -176,7 +173,7 @@ export const EmployeeForm = () => {
             required: true,
             message: "Please input correct street",
             whitespace: true,
-            pattern: RegExp("^[A-Za-z0-9,' -]+$"),
+            pattern: RegExp("^[A-Za-z0-9,' À-ÖØ-öø-ÿ]+$"),
           },
         ]}
       >
@@ -197,7 +194,7 @@ export const EmployeeForm = () => {
             required: true,
             message: "Please input correct city",
             whitespace: true,
-            pattern: RegExp("^[A-Za-z-' ]+$"),
+            pattern: RegExp("^[A-Za-z-' À-ÖØ-öø-ÿ]+$"),
           },
         ]}
       >
@@ -263,13 +260,7 @@ export const EmployeeForm = () => {
         ></Select>
       </Form.Item>
       <Form.Item>
-        <Button
-          onClick={() => {
-            showModal()
-          }}
-        >
-          Save
-        </Button>
+        <Button htmlType="submit">Save</Button>
         <Modal
           open={open}
           onCancel={handleCancel}
@@ -281,7 +272,6 @@ export const EmployeeForm = () => {
             </Button>,
             <Button
               key="submit"
-              htmlType="submit"
               type="primary"
               loading={loading}
               onClick={handleSubmit}
