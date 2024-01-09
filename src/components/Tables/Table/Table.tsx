@@ -24,9 +24,13 @@ export const Table = ({
   const [isDragging, setIsDragging] = useState(false)
   const [dragStartX, setDragStartX] = useState(0)
 
+  const [currentData, setCurrentData] = useState(dataSource)
+
   const [searchContent, setSearchContent] = useState<string>("")
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [entriesPerPage, setEntriesPerPage] = useState<number>(10)
+
+  const [openSortedModal, setOpenSortedModal] = useState<string | null>(null)
 
   const totalPages = Math.ceil(dataSource.length / entriesPerPage)
 
@@ -92,12 +96,59 @@ export const Table = ({
 
   const handleEntriesChange = (value: number) => {
     setEntriesPerPage(value)
-    setCurrentPage(1) // Reset to first page when changing entries per page
+    setCurrentPage(1)
+  }
+
+  const updateSortedModalState = (columnKey: string) => {
+    if (openSortedModal === columnKey) {
+      setOpenSortedModal(null)
+      return
+    }
+    setOpenSortedModal(columnKey)
+  }
+
+  const handleSortTable = (
+    currentColumn: ColumnType<any>,
+    order?: "asc" | "desc" | null,
+  ) => {
+    if (!currentColumn) return
+
+    if (order === null) {
+      setCurrentData(dataSource)
+      return
+    }
+
+    const sortedData = dataSource.slice().sort((a, b) => {
+      const aValue = a[currentColumn.dataIndex || ""] || ""
+      const bValue = b[currentColumn.dataIndex || ""] || ""
+
+      if (order === "asc") {
+        return aValue.localeCompare(bValue)
+      } else if (order === "desc") {
+        return bValue.localeCompare(aValue)
+      } else {
+        return 0
+      }
+    })
+
+    setCurrentData(sortedData)
+
+    return sortedData.map((record, index) => (
+      <tr key={"record" + index}>
+        {columns.map((column) => (
+          <td key={column.key}>
+            {column.render && record
+              ? column.render(record[column?.dataIndex || 0], record)
+              : record[column.dataIndex || 0]}
+          </td>
+        ))}
+      </tr>
+    ))
   }
 
   const indexOfLastEntry = currentPage * entriesPerPage
   const indexOfFirstEntry = indexOfLastEntry - entriesPerPage
-  const currentEntries = dataSource.slice(indexOfFirstEntry, indexOfLastEntry)
+  const currentEntries = currentData.slice(indexOfFirstEntry, indexOfLastEntry)
 
   return (
     <>
@@ -167,7 +218,37 @@ export const Table = ({
           <thead>
             <tr>
               {columns.map((column) => (
-                <th key={column.key}>{column.title}</th>
+                <th key={column.key}>
+                  <div>
+                    <span>{column.title}</span>
+                    <button
+                      onClick={() => updateSortedModalState(column.key)}
+                      className={Styles.sorted}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="feather feather-filter"
+                      >
+                        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                      </svg>
+                      {openSortedModal && openSortedModal === column.key && (
+                        <SortedMenuModal
+                          sortedTable={handleSortTable}
+                          currentColumn={column}
+                          updateModalState={updateSortedModalState}
+                        />
+                      )}
+                    </button>
+                  </div>
+                </th>
               ))}
             </tr>
           </thead>
@@ -193,7 +274,7 @@ export const Table = ({
           </tbody>
         </table>
       </div>
-      <div>
+      <div className={Styles.bottomControlers}>
         <span>
           Showing{" "}
           {dataSource.length > entriesPerPage
@@ -210,9 +291,7 @@ export const Table = ({
               handlePageChange(Math.max(1, currentPage - 1))
             }}
             disabled={currentPage === 1}
-            className={`${Styles.btnControl} ${
-              currentPage === 1 ? Styles.disabled : ""
-            }`}
+            className={Styles.btnControl}
           >
             Previous
           </button>
@@ -232,14 +311,41 @@ export const Table = ({
               handlePageChange(currentPage + 1)
             }}
             disabled={currentPage === totalPages}
-            className={`${Styles.btnControl} ${
-              currentPage === totalPages ? Styles.disabled : ""
-            }`}
+            className={Styles.btnControl}
           >
             Next
           </button>
         </div>
       </div>
     </>
+  )
+}
+
+const SortedMenuModal = ({
+  sortedTable,
+  currentColumn,
+  updateModalState,
+}: {
+  sortedTable: (
+    currentColumn: ColumnType<any>,
+    order?: "asc" | "desc" | null,
+  ) => void
+  currentColumn: ColumnType<any>
+  updateModalState: (colmunKey: string) => void
+}) => {
+  const handleClick = (order: "asc" | "desc" | null) => {
+    sortedTable(currentColumn, order)
+    updateModalState(currentColumn.key)
+  }
+
+  return (
+    <div className={Styles.sortredMenu} onClick={(e) => e.stopPropagation()}>
+      <p>Choose a filter</p>
+      <ul>
+        <li onClick={() => handleClick(null)}>none</li>
+        <li onClick={() => handleClick("asc")}>ascending</li>
+        <li onClick={() => handleClick("desc")}>descending</li>
+      </ul>
+    </div>
   )
 }

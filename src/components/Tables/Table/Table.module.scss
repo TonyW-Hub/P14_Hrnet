@@ -9,9 +9,87 @@
 
   th {
     background-color: #93ad18;
+    vertical-align: top;
 
     &:nth-child(even) {
       background-color: #6e8711;
+    }
+
+    &:last-child {
+      .sortredMenu {
+        right: 0;
+        left: initial;
+      }
+    }
+
+    div {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      width: 100%;
+    }
+
+    .sorted {
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      vertical-align: middle;
+      padding: 0;
+      position: relative;
+      width: clamp(20px, 20px, 20px);
+
+      svg {
+        width: clamp(20px, 20px, 20px);
+
+        &:hover {
+          stroke: #fff;
+        }
+      }
+    }
+
+    .sortredMenu {
+      position: absolute;
+      top: 25px;
+      left: 0;
+      background-color: #fff;
+      text-align: start;
+      width: 100%;
+      min-width: 100px;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      padding: 5px;
+      gap: 10px;
+      border-radius: 3px;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      z-index: 10;
+      cursor: initial;
+
+      p {
+        margin: 0;
+        font-weight: bold;
+      }
+
+      ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 5px;
+
+        li {
+          padding: 2px;
+          border-radius: 2px;
+          &:hover {
+            cursor: pointer;
+            background-color: #93ad18;
+          }
+        }
+      }
     }
   }
 
@@ -85,10 +163,15 @@
   }
 }
 
+.bottomControlers {
+  margin-top: 20px;
+}
+
 .paginationControls {
   display: flex;
   align-items: center;
   gap: 10px;
+  margin-top: 10px;
 
   .btnControl {
     background-color: #93ad18;
@@ -103,9 +186,35 @@
       background-color: lighten($color: #93ad18, $amount: 10);
       color: #000;
     }
-  }
 
-  .disabled {
-    background-color: grey;
+    &[disabled] {
+      background-color: grey;
+      color: #fff;
+    }
   }
+  .btnNumber {
+    background-color: #93ad18;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.15s ease-in-out;
+
+    &:hover {
+      background-color: lighten($color: #93ad18, $amount: 10);
+      color: #000;
+    }
+
+    &[disabled] {
+      background-color: grey;
+      color: #fff;
+    }
+  }
+}
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: #00000007;
 }

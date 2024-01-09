@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react"
+import { fireEvent, render, screen } from "@testing-library/react"
 import { Table, ColumnType } from "./Table"
 
 const columns: ColumnType<any>[] = [
@@ -52,6 +52,88 @@ describe("Table Component", () => {
 
     render(<Table dataSource={dataSource} columns={customColumns} />)
 
-    expect(screen.getByText("John")).toBeTruthy()
+    expect(screen.getAllByText("John").length).toBe(2)
+  })
+
+  it("renders 5 buttons with 10 entries default selected", () => {
+    const newDataSource = []
+
+    for (let index = 0; index <= 15; index++) {
+      const newObj = {
+        key: (index + 1).toString(),
+        firstName: `John ${index}`,
+        lastName: `Smith ${index}`,
+      }
+      newDataSource.push(newObj)
+    }
+
+    render(<Table dataSource={newDataSource} columns={columns} />)
+    const regNumber = new RegExp("^[0-9]$")
+
+    const menuItems = screen.getAllByRole("button", { name: regNumber })
+
+    expect(menuItems.length).toBe(2)
+  })
+
+  it("should render the first page with first item", () => {
+    const dataSource2 = []
+    for (let i = 1; i <= 50; i++) {
+      const obj = {
+        key: i.toString(),
+        firstName: `John ${i}`,
+        lastName: `Doe ${i}`,
+      }
+      dataSource2.push(obj)
+    }
+    render(<Table dataSource={dataSource2} columns={columns} />)
+    expect(screen.getByText("John 1")).toBeTruthy()
+  })
+
+  it("should render the first page with nine item", () => {
+    const dataSource2 = []
+    for (let i = 1; i <= 50; i++) {
+      const obj = {
+        key: i.toString(),
+        firstName: `John ${i}`,
+        lastName: `Doe ${i}`,
+      }
+      dataSource2.push(obj)
+    }
+    render(<Table dataSource={dataSource2} columns={columns} />)
+    expect(screen.getByText("John 9")).toBeTruthy()
+  })
+
+  it("should render the first page with only ten item", () => {
+    const dataSource2 = []
+    for (let i = 1; i <= 50; i++) {
+      const obj = {
+        key: i.toString(),
+        firstName: `John ${i}`,
+        lastName: `Doe ${i}`,
+      }
+      dataSource2.push(obj)
+    }
+    render(<Table dataSource={dataSource2} columns={columns} />)
+    expect(screen.queryByText("John 11")).toBeNull()
+  })
+
+  it("should render the second page with  item from 11 to 20", () => {
+    const newDataSource = []
+
+    for (let index = 0; index <= 15; index++) {
+      const newObj = {
+        key: (index + 1).toString(),
+        firstName: `John ${index}`,
+        lastName: `Smith ${index}`,
+      }
+      newDataSource.push(newObj)
+    }
+
+    render(<Table dataSource={newDataSource} columns={columns} />)
+
+    const pageTwoButton = screen.getByRole("button", { name: "2" })
+    fireEvent.click(pageTwoButton)
+
+    expect(screen.queryByText("John 11")).toBeThruthy()
   })
 })
