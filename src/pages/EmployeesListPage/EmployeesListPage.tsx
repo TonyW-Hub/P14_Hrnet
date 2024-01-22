@@ -1,9 +1,10 @@
 import React, { PropsWithChildren } from "react"
 import Styles from "./EmployeesListPage.module.scss"
-import { ColumnType, Table } from "../../components/Tables/Table/Table"
+// import { ColumnType, Table } from "../../components/Tables/Table/Table"
 import { Employee } from "../../types"
 import { useAppSelector } from "../../app/hooks"
 import { selectEmployees } from "../../features/employees/employeesSlice"
+import { Table, ColumnType } from "fluid-table-react"
 
 type EmployeesListPageProps = {}
 
